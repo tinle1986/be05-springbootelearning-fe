@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./lib/bootstrap/bootstrap.min.css">
+
+  <!--  <script src="https://kit.fontawesome.com/3a06200ec6.js" crossorigin="anonymous"></script>-->
+  <!--    <link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">-->
+  <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/profile.css">
+</head>
+
+<body>
+<header class="border-bottom">
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <a class="navbar-brand" href="index.html">Elearning</a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+            data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+            aria-label="Toggle navigation"></button>
+    <div class="collapse navbar-collapse row" id="collapsibleNavId">
+      <div class="col-md-6">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0 d-flex align-items-center justify-content-between">
+          <li class="nav-item mr-3">
+            <div class="dropdown">
+              <a class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-th"></i>
+                <span class="ml-2">Categories</span>
+              </a>
+              <div class="dropdown-menu" id="dropdownMenuId">
+                <a class="dropdown-item" href="#">
+                  <i class="fa fa-laptop mr-1"></i>
+                  <span>Development</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fa fa-camera-retro mr-1"></i>
+                  <span>Photography</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fa fa-bar-chart mr-1"></i>
+                  <span>Business</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fa fa-desktop mr-1"></i>
+                  <span>IT & Software</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fa fa-handshake-o mr-1"></i>
+                  <span>Marketing</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fa fa-music mr-1"></i>
+                  <span>Music</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fa fa-pencil-square-o mr-1"></i>
+                  <span>Design</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fa fa-cutlery mr-1"></i>
+                  <span>Cooking</span>
+                </a>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item w-100">
+            <form class="input-group nav-search">
+              <input type="text" class="form-control" placeholder="Search courses">
+              <div class="input-group-append">
+                <button class="btn bg-white text-danger"><i class="fa fa-search"></i></button>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-1 nav-cart">
+        <i class="fa fa-shopping-basket"></i>
+      </div>
+      <div class="col-md-5 d-flex justify-content-end">
+        <div class="dropdown">
+          <div class="dropdown-toggle font-weight-bold text-dark btn" data-toggle="dropdown" id="rightMenuTitle">
+            Cybersoft
+          </div>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="profile.html">Thông tin cá nhân</a>
+            <a class="dropdown-item" href="course.html">Khóa học của tôi</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" onclick="logOut()">Đăng xuất</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<nav aria-label="breadcrumb">
+  <div class="container-fluid">
+    <ol class="breadcrumb bg-white mb-0 py-2">
+      <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home mr-1"></i> Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Profile</li>
+    </ol>
+  </div>
+</nav>
+<!-- BEGIN BANNER -->
+<section class="course-banner">
+  <div class="container">
+    <div class="banner-content">
+      <h1 id="bnFullname">Nguyễn Tiến Hoàng</h1>
+      <h5 id="bnEmail">tienhoang1211@gmail.com</h5>
+    </div>
+  </div>
+</section>
+<!-- BEGIN BANNER -->
+<!-- BEGIN CONTENT -->
+<section class="mt-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-tabs__custom">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#profile">Elearning profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#picture">Profile picture</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#security">Security</a>
+          </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content tab-content__custom">
+          <div class="tab-pane container-fluid active" id="profile">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="text" class="form-control" id="fmEmail" readonly/>
+                </div>
+                <div class="form-group">
+                  <label>FullName</label>
+                  <input type="text" class="form-control" id="fmFullname"/>
+                </div>
+                <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" class="form-control"/>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="text" class="form-control" id="fmPhone"/>
+                </div>
+                <div class="form-group">
+                  <label>Website</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Website</span>
+                    </div>
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Facebook</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">http://www.facebook.com/</span>
+                    </div>
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-12">
+                <button class="btn btn-outline-secondary" onclick="updateUserProfile()">Save</button>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane container-fluid fade picture" id="picture">
+            <div class="row">
+              <div class="col-md-6">
+                <h6>Image preview</h6>
+                <small>Minimum 200x200 pixels, Maximum 6000x6000 pixels</small>
+                <div class="picture-wapper">
+                  <div class="picture-img">
+                    <img id="avatarImg" width="204" height="204"
+                         alt="">
+                  </div>
+                </div>
+                <input type="file" class="form-control" id="uploadImageButton"/>
+                <input type="hidden" name="avatar"/>
+                <button class="btn btn-outline-secondary mt-3" id="saveAvatarButton" onclick="saveAvatar()">Save
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane container-fluid fade" id="security">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="text" class="form-control" readonly
+                         id="scEmail"/>
+                </div>
+                <div class="form-group">
+                  <label>Current Password</label>
+                  <input type="password" class="form-control" id="currentPassword"/>
+                </div>
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" class="form-control" id="newPassword"/>
+                </div>
+                <div class="form-group">
+                  <label>Confirm New Password</label>
+                  <input type="password" class="form-control" id="confirmNewPassword"/>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button class="btn btn-outline-secondary" onclick="changePassword()">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END CONTENT -->
+<footer class="py-4 mt-4 text-center border-top">
+  <span>Copyright © 2019 Cybersoft, Inc.</span>
+</footer>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="./lib/jquery/jquery.slim.min.js"></script>
+<script src="./lib/popper.js/popper.min.js"></script>
+<script src="./lib/bootstrap/bootstrap.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--  Font Awesome-->
+<!--  <link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">-->
+<script src="https://kit.fontawesome.com/3a06200ec6.js" crossorigin="anonymous"></script>
+
+<!--Make Dropdown Menu Item-->
+<script>
+	axios({
+		url: 'http://localhost:8082/api/category',
+		method: 'GET'
+	}).then(res => {
+		let categories = res.data;
+		let htmlMenu = "";
+		categories.forEach(item => {
+			htmlMenu += `<a class="dropdown-item" href="#">
+                            <i class="${item.icon} mr-1"></i>
+                            <span class="text-capitalize">${item.title}</span>
+                        </a>`
+		})
+		let divMenu = document.getElementById("dropdownMenuId");
+		divMenu.innerHTML = htmlMenu;
+	}).catch(err => {
+		console.log(err);
+	})
+</script>
+
+<!--    Check token existence and show up user profile-->
+<script>
+	let token = localStorage.getItem("ut");
+	let userProfile = null
+	let imgUrl = null
+
+	if (!token) {
+		window.location.href = "index.html";
+	}
+
+	////////////////////// E-learning profile tab
+
+	// load profile info
+	axios({
+		url: 'http://localhost:8082/api/user',
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + token
+		}
+	}).then(res => {
+		userProfile = res.data;
+		document.getElementById("bnEmail").innerHTML = userProfile.email;
+		document.getElementById("bnFullname").innerHTML = userProfile.fullname;
+		document.getElementById("rightMenuTitle").innerHTML = userProfile.fullname;
+
+		document.getElementById("scEmail").value = userProfile.email;
+		document.getElementById("fmEmail").value = userProfile.email;
+		document.getElementById("fmFullname").value = userProfile.fullname;
+		document.getElementById("fmPhone").value = userProfile.phone;
+	}).catch(err => {
+		console.log(err);
+	})
+
+	// update profile info
+	function updateUserProfile() {
+		let email = document.getElementById("fmEmail").value;
+		let fullname = document.getElementById("fmFullname").value;
+		let phone = document.getElementById("fmPhone").value;
+
+		let newUserProfile = {
+			email: email,
+			fullname: fullname,
+			phone: phone
+		}
+
+		console.log(newUserProfile);
+
+		if (token !== null) {
+			axios({
+				url: 'http://localhost:8082/api/user',
+				method: 'PUT',
+				headers: {
+					Authorization: "Bearer " + token
+				},
+				data: newUserProfile
+			}).then(res => {
+				alert("Updated the user profile successfully!");
+				userProfile.email = email
+				userProfile.fullname = fullname
+				userProfile.phone = phone
+				document.getElementById("fmEmail").value = userProfile.email;
+				document.getElementById("fmFullname").value = userProfile.fullname;
+				document.getElementById("fmPhone").value = userProfile.phone;
+				window.location.reload();
+			}).catch(err => {
+				console.log(err);
+			})
+		}
+	}
+
+	/////////////////// Profile picture tab
+
+	// Load image
+	let defaultImgUrl = "https://i.udemycdn.com/user/200_H/anonymous_3.png";
+	axios({
+		url: 'http://localhost:8082/api/user/avatar',
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + token
+		}
+	}).then(res => {
+		if (res.data.startsWith("http") || res.data.startsWith("https")) {
+			imgUrl = res.data;
+		} else {
+			imgUrl = defaultImgUrl;
+		}
+		document.getElementById("avatarImg").setAttribute("src", imgUrl);
+	}).catch(err => {
+		console.log(err);
+	})
+
+
+	// Upload image
+	let uploadImageButton = document.getElementById("uploadImageButton");
+	uploadImageButton.addEventListener("change", event => {
+		let imgFile = event.target.files[0];
+		let formData = new FormData();
+		formData.append("file", imgFile);
+
+		axios({
+			url: 'http://localhost:8082/api/file/upload',
+			method: 'POST',
+			headers: {
+				Authorization: 'Bearer ' + token
+			},
+			data: formData
+		}).then(res => {
+			imgUrl = 'http://localhost:8082' + res.data;
+			document.getElementById("avatarImg").setAttribute("src", imgUrl);
+		}).catch(err => {
+			console.log(err);
+		})
+	})
+
+	function saveAvatar() {
+		let avatar = {
+			email: userProfile.email,
+			url: imgUrl
+		}
+		axios({
+			url: 'http://localhost:8082/api/user/avatar',
+			method: 'PUT',
+			headers: {
+				Authorization: 'Bearer ' + token
+			},
+			data: avatar
+		}).then(res => {
+			alert("Changed the avatar successfully!")
+      document.getElementById("uploadImageButton").value = res.data;
+			let uploadImageButtonInput = document.getElementById("uploadImageButton").value;
+			console.log(uploadImageButtonInput)
+		}).catch(err => {
+			console.log(err);
+		})
+	}
+
+	////////////////////// Security tab
+	function changePassword() {
+		let currentPassword = document.getElementById("currentPassword").value;
+		let newPassword = document.getElementById("newPassword").value;
+		let confirmNewPassword = document.getElementById("confirmNewPassword").value;
+
+		if (currentPassword === "") {
+			alert("Please input the current password!")
+			return;
+		}
+
+		if (newPassword === "") {
+			alert("Please input a new password!");
+			return;
+		}
+
+		if (newPassword !== confirmNewPassword) {
+			alert("New passwords do not match!");
+			return;
+		}
+
+		// check password matched
+		axios({
+			url: 'http://localhost:8082/api/user/password',
+			method: 'POST',
+			headers: {
+				Authorization: "Bearer " + token
+			},
+			data: {
+				currentPassword: currentPassword
+			}
+		}).then(res => {
+			// console.log(res)
+			if (res.data === false) {
+				alert("The current password is not correct! Please input the password again.")
+				return;
+			}
+			axios({
+				url: 'http://localhost:8082/api/user/password',
+				method: 'PUT',
+				headers: {
+					Authorization: "Bearer " + token
+				},
+				data: {
+					email: userProfile.email,
+					password: newPassword
+				}
+			}).then(res => {
+				// console.log(res)
+				alert(res.data);
+				document.getElementById("currentPassword").value = "";
+				document.getElementById("newPassword").value = "";
+				document.getElementById("confirmNewPassword").value = "";
+			}).catch(err => {
+				console.log(err)
+			})
+		}).catch(err => {
+			console.log(err);
+		})
+
+	}
+
+	function logOut() {
+		localStorage.removeItem("ut");
+		window.location.href = "index.html";
+	}
+
+</script>
+</body>
+
+</html>
