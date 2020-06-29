@@ -435,7 +435,6 @@ function showProfileMenu(token, id) {
 		rightMenuHtml = `
       <div class="dropdown">
         <div class="dropdown-toggle font-weight-bold text-dark btn" data-toggle="dropdown" id="rightMenuTitle">
-          Cybersoft
         </div>
         <div class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="profile.html">Thông tin cá nhân</a>
@@ -454,3 +453,51 @@ function showProfileMenu(token, id) {
 
 }
 
+function showPageFooter() {
+	let pageFooter = document.getElementById("page-footer")
+	pageFooter.innerHTML = `
+        <span>© 2020 TTLECOM, INC.</span>
+    `
+}
+
+function showProfileInfo(profile) {
+	document.getElementById("userEmail").innerHTML = profile.email;
+}
+
+// show my course list
+function showMyCourses(token) {
+	axios({
+		url: 'http://localhost:8082/api/user/course',
+		method: 'get',
+		headers: {
+			Authorization: 'Bearer ' + token,
+		}
+	}).then(res => {
+		let courseList = res.data;
+		let htmlCourseList = "";
+
+		courseList.forEach(courseItem => {
+			htmlCourseList += `
+  		  <div class="col-md-3">
+          <a href="#" class="my-course-item">
+            <img src="${courseItem.image}" alt="${courseItem.title}">
+            <h6 class="my-course-title">${courseItem.title}</h6>
+            <div class="my-course-desc">
+              ${courseItem.description}
+            </div>
+            <div class="my-course-author">
+              <h6>
+                <small>Lê Trung Tín</small>
+                <small>Start course</small>
+              </h6>
+            </div>
+          </a>
+        </div>
+  		`
+		})
+		let divCourseList = document.getElementById("my-course-list")
+		divCourseList.innerHTML = htmlCourseList;
+	}).catch(err => {
+		console.log(err);
+	})
+}

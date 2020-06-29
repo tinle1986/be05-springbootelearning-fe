@@ -299,8 +299,7 @@
 </div>
 
 
-<footer class="py-4 mt-4 text-center border-top">
-  <span>© 2020 TTLECOM, INC.</span>
+<footer class="py-4 mt-4 text-center border-top" id="page-footer">
 </footer>
 
 <!-- Optional JavaScript -->
@@ -321,7 +320,12 @@
 
 	// get user profile
 	let currentToken = localStorage.getItem("ut");
-	getUserProfile(currentToken)
+	if (currentToken) {
+		getUserProfile(currentToken)
+	} else {
+		localStorage.clear();
+		window.location.href = "index.html"
+	}
 
 	// show main menu
 	drawMainMenuItem();
@@ -356,6 +360,8 @@
 		buyAll(currentToken, courseDetails);
 	})
 
+  showPageFooter();
+
 	// function fetchCourseDetails(id) {
 	// 	axios({
 	// 		url: `http://localhost:8082/api/course/detail/${id}`,
@@ -368,7 +374,11 @@
 	// 	})
 	// }
 
+
+
 </script>
+
+
 </body>
 
 </html>
