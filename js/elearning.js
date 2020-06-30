@@ -5,10 +5,10 @@ function logOut() {
 	window.location.reload();
 }
 
-function disableAddCartAndBuyButton(course) {
+function disableAddCartAndBuyButton(id) {
 	// disable buy button when already bought current course
 	let courseList = JSON.parse(localStorage.getItem("courseBought"));
-	let alreadyBought = courseList.includes(course.id.toString()) || courseList.includes(course.id);
+	let alreadyBought = courseList.includes(id.toString()) || courseList.includes(id);
 	if (alreadyBought) {
 		document.getElementById("buyOneBtn").setAttribute("disabled", true);
 		document.getElementById("addCartBtn").setAttribute("disabled", true);
@@ -25,7 +25,7 @@ function getCourseBoughtList(token, course) {
 		}
 	}).then(res => {
 		localStorage.setItem("courseBought", JSON.stringify(res.data));
-		disableAddCartAndBuyButton(course);
+		disableAddCartAndBuyButton(course.id);
 	}).catch(err => {
 		console.log(err);
 	})
@@ -125,7 +125,7 @@ function showFrame(url, title) {
 }
 
 // buy all courses in cart
-function buyAll(token, course) {
+function buyAll(token, id) {
 	if (token == null) $("#loginModal").modal('show');
 	else {
 		let selectedCourses = JSON.parse(localStorage.getItem("courseInCart"));
@@ -146,7 +146,7 @@ function buyAll(token, course) {
 				courseList.push(courseItem);
 			})
 			localStorage.setItem("courseBought", JSON.stringify(courseList));
-			disableAddCartAndBuyButton(course);
+			disableAddCartAndBuyButton(id);
 		}).catch(err => {
 			console.log(err);
 		})
@@ -154,13 +154,13 @@ function buyAll(token, course) {
 }
 
 // buy current course function
-function buyOne(token, value, course) {
+function buyOne(token, id) {
 	// when click on Buy Now button, will show modal if without login token
 	if (token == null) {
 		$("#loginModal").modal('show');
 	} else {
 		let courseToBuy = {
-			cartList: [value]
+			cartList: [id]
 		};
 		axios({
 			url: 'http://localhost:8082/api/course/purchase',
@@ -172,13 +172,9 @@ function buyOne(token, value, course) {
 		}).then(res => {
 			clearCart();
 			let courseList = JSON.parse(localStorage.getItem("courseBought"));
-			console.log(courseList);
-			console.log(course);
-			console.log(value);
-			courseList.push(value);
-			console.log(courseList);
+			courseList.push(id);
 			localStorage.setItem("courseBought", JSON.stringify(courseList));
-			disableAddCartAndBuyButton(course);
+			disableAddCartAndBuyButton(id);
 		}).catch(err => {
 			console.log(err);
 		})
