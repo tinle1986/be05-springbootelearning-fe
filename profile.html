@@ -85,7 +85,6 @@
       <div class="col-md-5 d-flex justify-content-end">
         <div class="dropdown">
           <div class="dropdown-toggle font-weight-bold text-dark btn" data-toggle="dropdown" id="rightMenuTitle">
-            Cybersoft
           </div>
           <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="profile.html">Thông tin cá nhân</a>
@@ -178,7 +177,7 @@
 
               </div>
               <div class="col-md-12">
-                <button class="btn btn-outline-secondary" onclick="updateUserProfile()">Save</button>
+                <button class="btn btn-outline-secondary" id="saveProfileButton">Save</button>
               </div>
             </div>
           </div>
@@ -195,7 +194,7 @@
                 </div>
                 <input type="file" class="form-control" id="uploadImageButton"/>
                 <input type="hidden" name="avatar"/>
-                <button class="btn btn-outline-secondary mt-3" id="saveAvatarButton" onclick="saveAvatar()">Save
+                <button class="btn btn-outline-secondary mt-3" id="saveAvatarButton">Save
                 </button>
               </div>
             </div>
@@ -222,7 +221,7 @@
                 </div>
               </div>
               <div class="col-md-12">
-                <button class="btn btn-outline-secondary" onclick="changePassword()">Save</button>
+                <button class="btn btn-outline-secondary" id="savePasswordButton">Save</button>
               </div>
             </div>
           </div>
@@ -246,229 +245,42 @@
 <!--  <link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">-->
 <script src="https://kit.fontawesome.com/3a06200ec6.js" crossorigin="anonymous"></script>
 
+<script src="js/elearning.js"></script>
+
 <!--Make Dropdown Menu Item-->
 <script>
-	axios({
-		url: 'http://localhost:8082/api/category',
-		method: 'GET'
-	}).then(res => {
-		let categories = res.data;
-		let htmlMenu = "";
-		categories.forEach(item => {
-			htmlMenu += `<a class="dropdown-item" href="#">
-                            <i class="${item.icon} mr-1"></i>
-                            <span class="text-capitalize">${item.title}</span>
-                        </a>`
-		})
-		let divMenu = document.getElementById("dropdownMenuId");
-		divMenu.innerHTML = htmlMenu;
-	}).catch(err => {
-		console.log(err);
-	})
-</script>
+	drawMainMenuItem();
 
-<!--    Check token existence and show up user profile-->
-<script>
-	let token = localStorage.getItem("ut");
-	let userProfile = null
-	let imgUrl = null
-
-	if (!token) {
+	// get userProfile
+	let currentToken = localStorage.getItem("ut");
+	if (currentToken) {
+		getUserProfile(currentToken)
+	} else {
+		localStorage.clear();
 		window.location.href = "index.html";
 	}
 
-	////////////////////// E-learning profile tab
+	let userProfile = JSON.parse(localStorage.getItem("userProfile"));
 
-	// load profile info
-	axios({
-		url: 'http://localhost:8082/api/user',
-		method: 'GET',
-		headers: {
-			Authorization: 'Bearer ' + token
-		}
-	}).then(res => {
-		userProfile = res.data;
-		document.getElementById("bnEmail").innerHTML = userProfile.email;
-		document.getElementById("bnFullname").innerHTML = userProfile.fullname;
-		document.getElementById("rightMenuTitle").innerHTML = userProfile.fullname;
+	// E-learning profile tab
 
-		document.getElementById("scEmail").value = userProfile.email;
-		document.getElementById("fmEmail").value = userProfile.email;
-		document.getElementById("fmFullname").value = userProfile.fullname;
-		document.getElementById("fmPhone").value = userProfile.phone;
-	}).catch(err => {
-		console.log(err);
-	})
+	showProfileDetails(currentToken)
 
-	// update profile info
-	function updateUserProfile() {
-		let email = document.getElementById("fmEmail").value;
-		let fullname = document.getElementById("fmFullname").value;
-		let phone = document.getElementById("fmPhone").value;
+  document.getElementById("saveProfileButton").addEventListener("click", () => {
+  	updateUserProfile(currentToken);
+  })
 
-		let newUserProfile = {
-			email: email,
-			fullname: fullname,
-			phone: phone
-		}
+	// Profile picture tab
+	loadUserImage(currentToken);
+  uploadImage(currentToken);
+  document.getElementById("saveAvatarButton").addEventListener("click", () => {
+  	saveAvatar(currentToken, userProfile)
+  })
 
-		console.log(newUserProfile);
-
-		if (token !== null) {
-			axios({
-				url: 'http://localhost:8082/api/user',
-				method: 'PUT',
-				headers: {
-					Authorization: "Bearer " + token
-				},
-				data: newUserProfile
-			}).then(res => {
-				alert("Updated the user profile successfully!");
-				userProfile.email = email
-				userProfile.fullname = fullname
-				userProfile.phone = phone
-				document.getElementById("fmEmail").value = userProfile.email;
-				document.getElementById("fmFullname").value = userProfile.fullname;
-				document.getElementById("fmPhone").value = userProfile.phone;
-				window.location.reload();
-			}).catch(err => {
-				console.log(err);
-			})
-		}
-	}
-
-	/////////////////// Profile picture tab
-
-	// Load image
-	let defaultImgUrl = "https://i.udemycdn.com/user/200_H/anonymous_3.png";
-	axios({
-		url: 'http://localhost:8082/api/user/avatar',
-		method: 'GET',
-		headers: {
-			Authorization: 'Bearer ' + token
-		}
-	}).then(res => {
-		if (res.data.startsWith("http") || res.data.startsWith("https")) {
-			imgUrl = res.data;
-		} else {
-			imgUrl = defaultImgUrl;
-		}
-		document.getElementById("avatarImg").setAttribute("src", imgUrl);
-	}).catch(err => {
-		console.log(err);
-	})
-
-
-	// Upload image
-	let uploadImageButton = document.getElementById("uploadImageButton");
-	uploadImageButton.addEventListener("change", event => {
-		let imgFile = event.target.files[0];
-		let formData = new FormData();
-		formData.append("file", imgFile);
-
-		axios({
-			url: 'http://localhost:8082/api/file/upload',
-			method: 'POST',
-			headers: {
-				Authorization: 'Bearer ' + token
-			},
-			data: formData
-		}).then(res => {
-			imgUrl = 'http://localhost:8082' + res.data;
-			document.getElementById("avatarImg").setAttribute("src", imgUrl);
-		}).catch(err => {
-			console.log(err);
-		})
-	})
-
-	function saveAvatar() {
-		let avatar = {
-			email: userProfile.email,
-			url: imgUrl
-		}
-		axios({
-			url: 'http://localhost:8082/api/user/avatar',
-			method: 'PUT',
-			headers: {
-				Authorization: 'Bearer ' + token
-			},
-			data: avatar
-		}).then(res => {
-			alert("Changed the avatar successfully!")
-      document.getElementById("uploadImageButton").value = res.data;
-			let uploadImageButtonInput = document.getElementById("uploadImageButton").value;
-			console.log(uploadImageButtonInput)
-		}).catch(err => {
-			console.log(err);
-		})
-	}
-
-	////////////////////// Security tab
-	function changePassword() {
-		let currentPassword = document.getElementById("currentPassword").value;
-		let newPassword = document.getElementById("newPassword").value;
-		let confirmNewPassword = document.getElementById("confirmNewPassword").value;
-
-		if (currentPassword === "") {
-			alert("Please input the current password!")
-			return;
-		}
-
-		if (newPassword === "") {
-			alert("Please input a new password!");
-			return;
-		}
-
-		if (newPassword !== confirmNewPassword) {
-			alert("New passwords do not match!");
-			return;
-		}
-
-		// check password matched
-		axios({
-			url: 'http://localhost:8082/api/user/password',
-			method: 'POST',
-			headers: {
-				Authorization: "Bearer " + token
-			},
-			data: {
-				currentPassword: currentPassword
-			}
-		}).then(res => {
-			// console.log(res)
-			if (res.data === false) {
-				alert("The current password is not correct! Please input the password again.")
-				return;
-			}
-			axios({
-				url: 'http://localhost:8082/api/user/password',
-				method: 'PUT',
-				headers: {
-					Authorization: "Bearer " + token
-				},
-				data: {
-					email: userProfile.email,
-					password: newPassword
-				}
-			}).then(res => {
-				// console.log(res)
-				alert(res.data);
-				document.getElementById("currentPassword").value = "";
-				document.getElementById("newPassword").value = "";
-				document.getElementById("confirmNewPassword").value = "";
-			}).catch(err => {
-				console.log(err)
-			})
-		}).catch(err => {
-			console.log(err);
-		})
-
-	}
-
-	function logOut() {
-		localStorage.removeItem("ut");
-		window.location.href = "index.html";
-	}
+	// Security tab
+  document.getElementById("savePasswordButton").addEventListener("click", () => {
+  	changePassword(currentToken, userProfile);
+  })
 
 </script>
 </body>

@@ -322,9 +322,6 @@
 	let currentToken = localStorage.getItem("ut");
 	if (currentToken) {
 		getUserProfile(currentToken)
-	} else {
-		localStorage.clear();
-		window.location.href = "index.html"
 	}
 
 	// show main menu
@@ -361,18 +358,6 @@
 	})
 
   showPageFooter();
-
-	// function fetchCourseDetails(id) {
-	// 	axios({
-	// 		url: `http://localhost:8082/api/course/detail/${id}`,
-	// 		method: 'GET',
-	// 	}).then(res => {
-	// 		console.log(res.data);
-	// 		localStorage.setItem("courseDetails", JSON.stringify(res.data));
-	// 	}).catch(err => {
-	// 		console.log(err);
-	// 	})
-	// }
 
 
 
