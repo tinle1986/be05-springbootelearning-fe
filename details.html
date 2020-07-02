@@ -324,6 +324,10 @@
 		getUserProfile(currentToken)
 	}
 
+	getCourseBoughtList(currentToken);
+	let courseBought = JSON.parse(localStorage.getItem("courseBought"));
+
+
 	// show main menu
 	drawMainMenuItem();
 
@@ -334,6 +338,7 @@
 	let courseId = localStorage.getItem("courseId");
 	getCourseDetails(currentToken, courseId);
 	showProfileMenu(currentToken, courseId);
+	disableAddCartAndBuyButton(courseId);     // if bought, disable buttons
 
 	let courseDetails = JSON.parse(localStorage.getItem("courseDetails"));
 
@@ -351,14 +356,17 @@
 
 	document.getElementById("buyOneBtn").addEventListener("click", () => {
 		buyOne(currentToken, courseId);
+		disableButton("buyOneBtn");
+		disableButton("addCartBtn");
 	})
 
 	document.getElementById("purchaseCoursesBtn").addEventListener("click", () => {
-		buyAll(currentToken, courseId);
+		buyAll(currentToken);
+		disableButton("buyOneBtn");
+		disableButton("addCartBtn");
 	})
 
-  showPageFooter();
-
+	showPageFooter();
 
 
 </script>

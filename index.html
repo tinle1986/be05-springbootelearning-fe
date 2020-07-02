@@ -337,8 +337,7 @@
   </div>
 </div>
 
-<footer class="py-4 mt-4 text-center border-top">
-  <span>Copyright © 2019 Cybersoft, Inc.</span>
+<footer class="py-4 mt-4 text-center border-top" id="page-footer">
 </footer>
 
 <!-- Optional JavaScript -->
@@ -360,12 +359,17 @@
 		getUserProfile(currentToken);
 	}
 
+	getCourseBoughtList(currentToken);
+	let courseBought = JSON.parse(localStorage.getItem("courseBought"));
+
+
 	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
 	showProfileMenuWithoutCourseId(currentToken);
 
-	showSaleOffCourses();
-	showPopularCourses();
-	showPopularCategories(8)
+	showSaleOffCourses(courseBought);
+	showPopularCourses(courseBought);
+	showPopularCategories(8);
+	showPageFooter();
 </script>
 </body>
 

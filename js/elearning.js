@@ -7,16 +7,30 @@ function logOut() {
 
 function disableAddCartAndBuyButton(id) {
 	// disable buy button when already bought current course
+	let courseId
+	if (typeof id == "string") {
+		courseId = parseInt(id, 10);
+	} else {
+		courseId = id;
+	}
 	let courseList = JSON.parse(localStorage.getItem("courseBought"));
-	let alreadyBought = courseList.includes(id.toString()) || courseList.includes(id);
+	let alreadyBought = false;
+	alreadyBought =	courseList.includes(courseId);
+
 	if (alreadyBought) {
-		document.getElementById("buyOneBtn").setAttribute("disabled", true);
-		document.getElementById("addCartBtn").setAttribute("disabled", true);
+		/*document.getElementById("buyOneBtn").setAttribute("disabled", true);
+		document.getElementById("addCartBtn").setAttribute("disabled", true);*/
+		disableButton("buyOneBtn");
+		disableButton("addCartBtn");
 	}
 }
 
+function disableButton(btnName) {
+	document.getElementById(btnName).setAttribute("disabled", true);
+}
+
 // get list of course bought
-function getCourseBoughtList(token, course) {
+function getCourseBoughtList(token) {
 	axios({
 		url: 'http://localhost:8082/api/course/purchase/bought',
 		method: 'get',
@@ -25,7 +39,6 @@ function getCourseBoughtList(token, course) {
 		}
 	}).then(res => {
 		localStorage.setItem("courseBought", JSON.stringify(res.data));
-		disableAddCartAndBuyButton(course.id);
 	}).catch(err => {
 		console.log(err);
 	})
@@ -125,7 +138,7 @@ function showFrame(url, title) {
 }
 
 // buy all courses in cart
-function buyAll(token, id) {
+function buyAll(token) {
 	if (token == null) $("#loginModal").modal('show');
 	else {
 		let selectedCourses = JSON.parse(localStorage.getItem("courseInCart"));
@@ -141,12 +154,13 @@ function buyAll(token, id) {
 			data: courseToBuy
 		}).then(res => {
 			clearCart();
-			let courseList = JSON.parse(localStorage.getItem("courseBought"));
+			getCourseBoughtList(token);
+			/*let courseList = JSON.parse(localStorage.getItem("courseBought"));
 			selectedCourses.forEach(courseItem => {
 				courseList.push(courseItem);
 			})
-			localStorage.setItem("courseBought", JSON.stringify(courseList));
-			disableAddCartAndBuyButton(id);
+			localStorage.setItem("courseBought", JSON.stringify(courseList));*/
+			// disableAddCartAndBuyButton(id);
 		}).catch(err => {
 			console.log(err);
 		})
@@ -154,7 +168,7 @@ function buyAll(token, id) {
 }
 
 // buy current course function
-function buyOne(token, id) {
+async function buyOne(token, id) {
 	// when click on Buy Now button, will show modal if without login token
 	if (token == null) {
 		$("#loginModal").modal('show');
@@ -171,10 +185,11 @@ function buyOne(token, id) {
 			data: courseToBuy
 		}).then(res => {
 			clearCart();
-			let courseList = JSON.parse(localStorage.getItem("courseBought"));
+			getCourseBoughtList(token)
+			/*let courseList = JSON.parse(localStorage.getItem("courseBought"));
 			courseList.push(id);
-			localStorage.setItem("courseBought", JSON.stringify(courseList));
-			disableAddCartAndBuyButton(id);
+			localStorage.setItem("courseBought", JSON.stringify(courseList));*/
+			// disableAddCartAndBuyButton(id);
 		}).catch(err => {
 			console.log(err);
 		})
@@ -198,13 +213,14 @@ function clearCart() {
 
 // add cart function, add courseId into courses selected
 function addCart(value) {
+	let idAdded = parseInt(value, 10);
 	// check cart count
 	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
 	if (courseInCart == null) {
 		courseInCart = [];
 	}
 
-	courseInCart.push(value);
+	courseInCart.push(idAdded);
 
 	// deduplicate item
 	courseInCart = [...new Set(courseInCart)];
@@ -269,7 +285,7 @@ function getCourseDetails(token, id) {
 		document.getElementById("buyOneBtn").setAttribute("value", course.id);
 
 		if (token) {
-			getCourseBoughtList(token, course);
+			// getCourseBoughtList(token, course);
 			// disableAddCartAndBuyButton(course);
 		}
 
@@ -497,11 +513,11 @@ function showMyCourses(token) {
 		}
 	}).then(res => {
 		let courseList = res.data;
-		let htmlCourseList = "";
+		let htmlCourses = "";
 
-		if (courseList.length > 0 ) {
+		if (courseList.length > 0) {
 			courseList.forEach(courseItem => {
-				htmlCourseList += `
+				htmlCourses += `
   		  <div class="col-md-3">
           <a href="details.html" class="my-course-item" onclick="courseDetail(${courseItem.id})">
             <img src="${courseItem.image}" alt="${courseItem.title}">
@@ -520,14 +536,14 @@ function showMyCourses(token) {
   		`
 			})
 		} else {
-			htmlCourseList += `
+			htmlCourses += `
 				<h2>You don't have any courses!</h2>
 			`
 		}
 
 
 		let divCourseList = document.getElementById("my-course-list")
-		divCourseList.innerHTML = htmlCourseList;
+		divCourseList.innerHTML = htmlCourses;
 	}).catch(err => {
 		console.log(err);
 	})
@@ -750,7 +766,7 @@ function showPopularCategories(num) {
 }
 
 // make html for course list
-function htmlCourseList(courses, num) {
+function htmlCourseList(courses, num, courseBought) {
 	let htmlCourses = "";
 	if (num == null) {
 		courses.forEach(item => {
@@ -786,8 +802,9 @@ function htmlCourseList(courses, num) {
                   ${item.content}
                 </small>
               </a>
-              <a href="#" class="btn btn-sm btn-danger text-white w-100">Add to cart</a>
-            </div>
+							${courseBought.includes(item.id)
+				? `<button class="btn-sm btn-dark text-white w-100" disabled>Add to cart</button>
+              ` : `<button class="btn btn-sm btn-danger text-white w-100">Add to cart</button> `}            </div>
           </div>
         </div>
   		`
@@ -826,7 +843,10 @@ function htmlCourseList(courses, num) {
                   ${item.content}
                 </small>
               </a>
-              <a href="#" class="btn btn-sm btn-danger text-white w-100">Add to cart</a>
+              
+              ${courseBought.includes(item.id)
+				? `<button class="btn-sm btn-dark text-white w-100" disabled>Add to cart</button>
+              ` : `<button class="btn btn-sm btn-danger text-white w-100">Add to cart</button> `}
             </div>
           </div>
         </div>
@@ -836,7 +856,7 @@ function htmlCourseList(courses, num) {
 	return htmlCourses;
 }
 
-function showSaleOffCourses() {
+function showSaleOffCourses(courseBought) {
 	axios({
 		url: 'http://localhost:8082/api/course/list',
 		method: 'GET'
@@ -844,7 +864,7 @@ function showSaleOffCourses() {
 		let courseList = res.data;
 		let htmlSaleOffCourse = "";
 
-		htmlSaleOffCourse = htmlCourseList(courseList, 4);
+		htmlSaleOffCourse = htmlCourseList(courseList, 4, courseBought);
 
 		let saleOffSec = document.getElementById("saleOffSec");
 		saleOffSec.innerHTML = htmlSaleOffCourse;
@@ -852,7 +872,8 @@ function showSaleOffCourses() {
 		console.log(err)
 	})
 }
-function showPopularCourses() {
+
+function showPopularCourses(courseBought) {
 	axios({
 		url: 'http://localhost:8082/api/course/list',
 		method: 'GET'
@@ -860,7 +881,7 @@ function showPopularCourses() {
 		let courseList = res.data;
 		let htmlPopularCourse = "";
 
-		htmlPopularCourse = htmlCourseList(courseList, null);
+		htmlPopularCourse = htmlCourseList(courseList, null, courseBought);
 
 		let popularSec1 = document.getElementById("popularSec1");
 		popularSec1.innerHTML = htmlPopularCourse;
