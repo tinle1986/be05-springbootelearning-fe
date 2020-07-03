@@ -329,9 +329,11 @@
 	let currentToken = localStorage.getItem("ut");
 	if (currentToken) {
 		getUserProfile(currentToken);
+		getCourseBoughtList(currentToken);
+		showProfileMenuWithoutCourseId(currentToken);
+
 	}
 
-	getCourseBoughtList(currentToken);
 	let courseBought = JSON.parse(localStorage.getItem("courseBought"));
 
 
@@ -351,7 +353,6 @@
     })
   })
 
-	showProfileMenuWithoutCourseId(currentToken);
 	showSaleOffCourses(courseBought);
 	showPopularCourses(courseBought);
 	showPopularCategories(8);

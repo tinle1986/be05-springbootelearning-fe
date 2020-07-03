@@ -291,15 +291,21 @@
 <!--use the custom js file-->
 <script src="js/elearning.js"></script>
 <script>
+	let courseId = localStorage.getItem("courseId");
+	let courseBought = [];
 
 	// get user profile
 	let currentToken = localStorage.getItem("ut");
 	if (currentToken) {
-		getUserProfile(currentToken)
+		getUserProfile(currentToken);
+		getCourseBoughtList(currentToken);
+		getCourseDetails(currentToken, courseId);
+		showProfileMenu(currentToken, courseId);
+		disableAddCartAndBuyButton(courseId);     // if bought, disable buttons
+		courseBought = JSON.parse(localStorage.getItem("courseBought"));
 	}
 
-	getCourseBoughtList(currentToken);
-	let courseBought = JSON.parse(localStorage.getItem("courseBought"));
+
 
 
 	// show main menu
@@ -309,10 +315,7 @@
 	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
 	let userProfile = JSON.parse(localStorage.getItem("userProfile"));
 
-	let courseId = localStorage.getItem("courseId");
-	getCourseDetails(currentToken, courseId);
-	showProfileMenu(currentToken, courseId);
-	disableAddCartAndBuyButton(courseId);     // if bought, disable buttons
+
 
 	let courseDetails = JSON.parse(localStorage.getItem("courseDetails"));
 

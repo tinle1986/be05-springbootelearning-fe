@@ -34,38 +34,6 @@
                 <span class="ml-2">Categories</span>
               </a>
               <div class="dropdown-menu" id="dropdownMenuId">
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-laptop mr-1"></i>
-                  <span>Development</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-camera-retro mr-1"></i>
-                  <span>Photography</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-bar-chart mr-1"></i>
-                  <span>Business</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-desktop mr-1"></i>
-                  <span>IT & Software</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-handshake-o mr-1"></i>
-                  <span>Marketing</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-music mr-1"></i>
-                  <span>Music</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-pencil-square-o mr-1"></i>
-                  <span>Design</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-cutlery mr-1"></i>
-                  <span>Cooking</span>
-                </a>
               </div>
             </div>
           </li>
@@ -109,8 +77,8 @@
 <section class="course-banner">
   <div class="container">
     <div class="banner-content">
-      <h1 id="bnFullname">Nguyễn Tiến Hoàng</h1>
-      <h5 id="bnEmail">tienhoang1211@gmail.com</h5>
+      <h1 id="bnFullname"></h1>
+      <h5 id="bnEmail"></h5>
     </div>
   </div>
 </section>
@@ -254,6 +222,9 @@
 	let currentToken = localStorage.getItem("ut");
 	if (currentToken) {
 		getUserProfile(currentToken)
+		showProfileDetails(currentToken)
+		loadUserImage(currentToken);
+		uploadImage(currentToken);
 	} else {
 		localStorage.clear();
 		window.location.href = "index.html";
@@ -263,15 +234,13 @@
 
 	// E-learning profile tab
 
-	showProfileDetails(currentToken)
 
   document.getElementById("saveProfileButton").addEventListener("click", () => {
   	updateUserProfile(currentToken);
   })
 
 	// Profile picture tab
-	loadUserImage(currentToken);
-  uploadImage(currentToken);
+
   document.getElementById("saveAvatarButton").addEventListener("click", () => {
   	saveAvatar(currentToken, userProfile)
   })

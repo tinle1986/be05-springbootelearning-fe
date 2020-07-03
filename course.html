@@ -76,7 +76,7 @@
   <div class="container">
     <div class="banner-content">
       <h1>My course</h1>
-      <h5 id="userEmail">tienhoang1211@gmail.com</h5>
+      <h5 id="userEmail"></h5>
     </div>
   </div>
 </section>
@@ -109,6 +109,8 @@
 
 	if (currentToken) {
 		getUserProfile(currentToken)
+		showMyCourses(currentToken);
+
 	} else {
 		localStorage.clear();
 		window.location.href = "index.html"
@@ -116,7 +118,6 @@
 
   let userProfile = JSON.parse(localStorage.getItem("userProfile"));
   showProfileInfo(userProfile)
-  showMyCourses(currentToken);
   showPageFooter();
 
 
