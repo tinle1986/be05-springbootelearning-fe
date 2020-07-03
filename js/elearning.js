@@ -15,7 +15,7 @@ function disableAddCartAndBuyButton(id) {
 	}
 	let courseList = JSON.parse(localStorage.getItem("courseBought"));
 	let alreadyBought = false;
-	alreadyBought =	courseList.includes(courseId);
+	alreadyBought = courseList.includes(courseId);
 
 	if (alreadyBought) {
 		/*document.getElementById("buyOneBtn").setAttribute("disabled", true);
@@ -25,8 +25,22 @@ function disableAddCartAndBuyButton(id) {
 	}
 }
 
-function disableButton(btnName) {
-	document.getElementById(btnName).setAttribute("disabled", true);
+function disableButton(btnId) {
+	document.getElementById(btnId).setAttribute("disabled", true);
+}
+
+function disableButtonInList(btnId) {
+	document.getElementById(btnId).classList.remove("btn", "btn-danger");
+	document.getElementById(btnId).classList.add("btn-dark");
+	document.getElementById(btnId).setAttribute("disabled", true);
+}
+
+function disableCartPurchase() {
+	document.getElementById("selectedCourses").innerHTML = `
+    	   <a class="dropdown-item disable-links" href="#">No Course To Purchase</a>
+    	`
+	document.getElementById("purchaseCoursesBtn").classList.add("disable-links");
+	document.getElementById("clearCoursesBtn").classList.add("disable-links");
 }
 
 // get list of course bought
@@ -200,12 +214,12 @@ async function buyOne(token, id) {
 function clearCart() {
 	localStorage.removeItem("courseInCart");
 	document.getElementById("cartCount").innerHTML = 0;
-
-	document.getElementById("selectedCourses").innerHTML = `
+	disableCartPurchase();
+	/*document.getElementById("selectedCourses").innerHTML = `
     	   <a class="dropdown-item disable-links" href="#">No Course To Purchase</a>
     	`
 	document.getElementById("purchaseCoursesBtn").classList.add("disable-links");
-	document.getElementById("clearCoursesBtn").classList.add("disable-links");
+	document.getElementById("clearCoursesBtn").classList.add("disable-links");*/
 
 
 	// window.location.reload();
@@ -228,12 +242,42 @@ function addCart(value) {
 	document.getElementById("purchaseCoursesBtn").classList.remove("disable-links");
 	document.getElementById("clearCoursesBtn").classList.remove("disable-links");
 
-	// show cart list
+	showCartList(courseInCart);
+	/*// show cart list
 	axios({
 		url: 'http://localhost:8082/api/course/cart',
 		method: 'POST',
 		data: {
 			cartList: courseInCart
+		}
+	}).then(res => {
+		console.log("This is show cart list scope");
+		console.log(res.data)
+		let selectedCourses = document.getElementById("selectedCourses");
+		let htmlSelectedCoursesSub = "";
+		let cartList = res.data;
+		cartList.forEach(cart => {
+			htmlSelectedCoursesSub += `
+          <li><a class="dropdown-item" href="#">${cart.title}</a></li>
+        `
+		})
+		selectedCourses.innerHTML = `
+    	  <ol id="selectedCoursesSub">` + htmlSelectedCoursesSub + `</ol>
+    	`;
+	}).catch(err => {
+		console.log(err);
+	})*/
+
+	localStorage.setItem("courseInCart", JSON.stringify(courseInCart));
+}
+
+// show cart list
+function showCartList(courseIdList) {
+	axios({
+		url: 'http://localhost:8082/api/course/cart',
+		method: 'POST',
+		data: {
+			cartList: courseIdList
 		}
 	}).then(res => {
 		let selectedCourses = document.getElementById("selectedCourses");
@@ -250,8 +294,6 @@ function addCart(value) {
 	}).catch(err => {
 		console.log(err);
 	})
-
-	localStorage.setItem("courseInCart", JSON.stringify(courseInCart));
 }
 
 // load course detail
@@ -364,12 +406,13 @@ function getCourseDetails(token, id) {
 		})
 
 		// fetch cart list
-		if (courseInCart.length === 0) {
-			document.getElementById("selectedCourses").innerHTML = `
+		/*if (courseInCart.length === 0) {
+			disableCartPurchase();
+			/!*document.getElementById("selectedCourses").innerHTML = `
     	   <a class="dropdown-item disable-links" href="#">No Course To Purchase</a>
     	`
 			document.getElementById("purchaseCoursesBtn").classList.add("disable-links");
-			document.getElementById("clearCoursesBtn").classList.add("disable-links");
+			document.getElementById("clearCoursesBtn").classList.add("disable-links");*!/
 		} else {
 			axios({
 				url: 'http://localhost:8082/api/course/cart',
@@ -390,7 +433,7 @@ function getCourseDetails(token, id) {
 			}).catch(err => {
 				console.log(err);
 			})
-		}
+		}*/
 
 	}).catch(err => {
 		console.log(err);
@@ -768,9 +811,10 @@ function showPopularCategories(num) {
 // make html for course list
 function htmlCourseList(courses, num, courseBought) {
 	let htmlCourses = "";
-	if (num == null) {
-		courses.forEach(item => {
-			htmlCourses += `
+	if (courseBought != null) {
+		if (num == null) {
+			courses.forEach(item => {
+				htmlCourses += `
         <div class="col-md-2">
           <div class="course">
             <img src="${item.image}"/>
@@ -803,15 +847,15 @@ function htmlCourseList(courses, num, courseBought) {
                 </small>
               </a>
 							${courseBought.includes(item.id)
-				? `<button class="btn-sm btn-dark text-white w-100" disabled>Add to cart</button>
-              ` : `<button class="btn btn-sm btn-danger text-white w-100">Add to cart</button> `}            </div>
+					? `<button class="btn-sm btn-dark text-white w-100" disabled>Add to cart</button>
+              ` : `<button class="btn btn-sm btn-danger text-white w-100" onclick="addCart(${item.id})" id="addCartBtn_${item.id}">Add to cart</button> `}            </div>
           </div>
         </div>
   		`
-		})
-	} else {
-		courses.slice(0, num).forEach(item => {
-			htmlCourses += `
+			})
+		} else {
+			courses.slice(0, num).forEach(item => {
+				htmlCourses += `
         <div class="col-md-3">
           <div class="course">
             <img src="${item.image}"/>
@@ -845,13 +889,96 @@ function htmlCourseList(courses, num, courseBought) {
               </a>
               
               ${courseBought.includes(item.id)
-				? `<button class="btn-sm btn-dark text-white w-100" disabled>Add to cart</button>
-              ` : `<button class="btn btn-sm btn-danger text-white w-100">Add to cart</button> `}
+					? `<button class="btn-sm btn-dark text-white w-100" disabled>Add to cart</button>
+              ` : `<button class="btn btn-sm btn-danger text-white w-100" onclick="addCart(${item.id})" id="addCartBtn_${item.id}">Add to cart</button> `}
             </div>
           </div>
         </div>
   		`
-		})
+			})
+		}
+	} else {
+		if (num == null) {
+			courses.forEach(item => {
+				htmlCourses += `
+        <div class="col-md-2">
+          <div class="course">
+            <img src="${item.image}"/>
+            <h6 class="course-title">${item.title}</h6>
+            <small class="course-content">
+              ${item.content}
+            </small>
+            <div class="course-price">
+              <span>${item.price}$</span>
+              <small>499$</small>
+            </div>
+            <div class="seller-label">Sale 10%</div>
+            <div class="course-overlay">
+              <a href="details.html" onclick="courseDetail(${item.id})">
+                <h6 class="course-title">
+                  ${item.title}
+                </h6>
+                <div class="course-author">
+                  <b>Lê Trung Tín</b>
+                  <span class="mx-1"> | </span>
+                  <b class="text-capitalize">${item.categoryTitle}</b>
+                </div>
+                <div class="course-info">
+                  <span><i class="fa fa-play-circle"></i> ${item.lectureCount}</span>
+                  <span class="mx-1"> | </span>
+                  <span><i class="fa fa-clock-o"></i> ${item.hourCount}</span>
+                </div>
+                <small class="course-content">
+                  ${item.content}
+                </small>
+              </a>
+							<button class="btn btn-sm btn-danger text-white w-100" onclick="addCart(${item.id})" id="addCartBtn_${item.id}">Add to cart</button>            
+						</div>
+          </div>
+        </div>
+  		`
+			})
+		} else {
+			courses.slice(0, num).forEach(item => {
+				htmlCourses += `
+        <div class="col-md-3">
+          <div class="course">
+            <img src="${item.image}"/>
+            <h6 class="course-title">${item.title}</h6>
+            <small class="course-content">
+              ${item.content}
+            </small>
+            <div class="course-price">
+              <span>${item.price}$</span>
+              <small>499$</small>
+            </div>
+            <div class="seller-label">Sale 10%</div>
+            <div class="course-overlay">
+              <a href="details.html" onclick="courseDetail(${item.id})">
+                <h6 class="course-title">
+                  ${item.title}
+                </h6>
+                <div class="course-author">
+                  <b>Lê Trung Tín</b>
+                  <span class="mx-1"> | </span>
+                  <b class="text-capitalize">${item.categoryTitle}</b>
+                </div>
+                <div class="course-info">
+                  <span><i class="fa fa-play-circle"></i> ${item.lectureCount}</span>
+                  <span class="mx-1"> | </span>
+                  <span><i class="fa fa-clock-o"></i> ${item.hourCount}</span>
+                </div>
+                <small class="course-content">
+                  ${item.content}
+                </small>
+              </a>
+              <button class="btn btn-sm btn-danger text-white w-100" onclick="addCart(${item.id})" id="addCartBtn_${item.id}">Add to cart</button>
+            </div>
+          </div>
+        </div>
+  		`
+			})
+		}
 	}
 	return htmlCourses;
 }

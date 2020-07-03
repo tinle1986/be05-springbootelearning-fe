@@ -3,6 +3,9 @@
 
 <head>
   <title>Title</title>
+  <!--  Customized CSS-->
+  <link rel="stylesheet" href="css/elearning.css">
+
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -47,7 +50,24 @@
         </ul>
       </div>
       <div class="col-md-1 nav-cart">
-        <i class="fa fa-shopping-basket"></i>
+        <!--        <i class="fa fa-shopping-basket"></i>-->
+
+        <div class="dropdown">
+          <div class="dropdown-toggle font-weight-bold text-dark btn notification" data-toggle="dropdown" id="">
+            <i class="fa fa-shopping-basket"></i>
+            <span class="badge" id="cartCount">0</span>
+          </div>
+          <div class="dropdown-menu">
+            <div id="selectedCourses">
+              <ol id="selectedCoursesSub">
+              </ol>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a id="purchaseCoursesBtn" class="dropdown-item" href="#">Purchase Courses</a>
+            <div class="dropdown-divider"></div>
+            <a id="clearCoursesBtn" class="dropdown-item" href="#" onclick="clearCart()">Clear Courses</a>
+          </div>
+        </div>
       </div>
       <div class="col-md-5 text-right" id="rightMenu">
         <button class="btn btn-outline-secondary" data-toggle="modal"
@@ -150,54 +170,6 @@
   <div class="container-fluid">
     <h3 class="title mt-0">Top Categories</h3>
     <div class="row" id="popularCategory">
-      <div class="col-md-3">
-        <a class="category">
-          <i class="fa fa-laptop"></i>
-          <span>Development</span>
-        </a>
-      </div>
-      <div class="col-md-3">
-        <a class="category">
-          <i class="fa fa-camera-retro"></i>
-          <span>Photography</span>
-        </a>
-      </div>
-      <div class="col-md-3">
-        <a class="category">
-          <i class="fa fa-bar-chart"></i>
-          <span>Business</span>
-        </a>
-      </div>
-      <div class="col-md-3">
-        <a class="category">
-          <i class="fa fa-desktop"></i>
-          <span>IT & Software</span>
-        </a>
-      </div>
-      <div class="col-md-3">
-        <a class="category">
-          <i class="fa fa-handshake-o"></i>
-          <span>Marketing</span>
-        </a>
-      </div>
-      <div class="col-md-3">
-        <a class="category">
-          <i class="fa fa-pencil-square-o"></i>
-          <span>Design</span>
-        </a>
-      </div>
-      <div class="col-md-3">
-        <a class="category">
-          <i class="fa fa-cutlery"></i>
-          <span>Cooking</span>
-        </a>
-      </div>
-      <div class="col-md-3">
-        <a class="category">
-          <i class="fa fa-music"></i>
-          <span>Music</span>
-        </a>
-      </div>
     </div>
   </div>
 </section>
@@ -364,8 +336,22 @@
 
 
 	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
-	showProfileMenuWithoutCourseId(currentToken);
+	if (courseInCart == null) {
+		courseInCart = [];
+		disableCartPurchase();
+  } else {
+		showCartList(courseInCart)
+	}
+	document.getElementById("cartCount").innerHTML = courseInCart.length;
+	document.getElementById("purchaseCoursesBtn").addEventListener("click", () => {
+		let courseIdList = JSON.parse(localStorage.getItem("courseInCart"));
+		buyAll(currentToken);
+		courseIdList.forEach(courseId => {
+			disableButtonInList("addCartBtn_" + courseId);
+    })
+  })
 
+	showProfileMenuWithoutCourseId(currentToken);
 	showSaleOffCourses(courseBought);
 	showPopularCourses(courseBought);
 	showPopularCategories(8);

@@ -231,8 +231,7 @@
   </div>
 </section>
 <!-- END CONTENT -->
-<footer class="py-4 mt-4 text-center border-top">
-  <span>Copyright © 2019 Cybersoft, Inc.</span>
+<footer class="py-4 mt-4 text-center border-top" id="page-footer">
 </footer>
 
 <!-- Optional JavaScript -->
@@ -281,6 +280,8 @@
   document.getElementById("savePasswordButton").addEventListener("click", () => {
   	changePassword(currentToken, userProfile);
   })
+
+  showPageFooter();
 
 </script>
 </body>

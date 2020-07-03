@@ -3,35 +3,9 @@
 
 <head>
   <title>Title</title>
-  <style>
-    .notification {
-      background-color: #555;
-      color: white;
-      text-decoration: none;
-      padding: 15px 26px;
-      position: relative;
-      display: inline-block;
-      border-radius: 2px;
-    }
+  <!--  Customized CSS-->
+  <link rel="stylesheet" href="css/elearning.css">
 
-    .notification:hover {
-      background: lightgrey;
-    }
-
-    .notification .badge {
-      /*position: absolute;*/
-      top: -10px !important;
-      right: 0px;
-      padding: 5px 10px;
-      border-radius: 50%;
-      background: orangered;
-      color: white;
-    }
-
-    a.disable-links {
-      pointer-events: none;
-    }
-  </style>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -346,6 +320,9 @@
 	// check cart count
 	if (courseInCart == null) {
 		courseInCart = [];
+		disableCartPurchase();
+	} else {
+		showCartList(courseInCart);
 	}
 	document.getElementById("cartCount").innerHTML = courseInCart.length;
 
