@@ -1,8 +1,8 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
-  <title>Course Details</title>
+  <title>Category</title>
   <!--  Customized CSS-->
   <link rel="stylesheet" href="css/elearning.css">
 
@@ -12,13 +12,11 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="./lib/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">
+
+
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-  <link rel="stylesheet" href="./lib/modal-video/css/modal-video.min.css">
   <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./css/course.css">
-
-
+  <link rel="stylesheet" href="./css/home.css">
 </head>
 
 <body>
@@ -52,6 +50,8 @@
         </ul>
       </div>
       <div class="col-md-1 nav-cart">
+        <!--        <i class="fa fa-shopping-basket"></i>-->
+
         <div class="dropdown">
           <div class="dropdown-toggle font-weight-bold text-dark btn notification" data-toggle="dropdown" id="">
             <i class="fa fa-shopping-basket"></i>
@@ -73,11 +73,15 @@
         <button class="btn btn-outline-secondary" data-toggle="modal"
                 data-target="#loginModal">Login
         </button>
-        <button class="btn btn-danger ml-2" data-toggle="modal" data-target="#signUpModal">Sign up</button>
+        <button class="btn btn-danger ml-2" data-toggle="modal" data-target="#signUpModal">Sign
+          up
+        </button>
       </div>
     </div>
   </nav>
 </header>
+
+<!--BREADCRUMB LINE-->
 <nav aria-label="breadcrumb">
   <div class="container-fluid">
     <ol class="breadcrumb bg-white mb-0 py-2">
@@ -87,88 +91,12 @@
     </ol>
   </div>
 </nav>
-<section class="course-banner">
-  <div class="container">
-    <div class="banner-content">
-      <h1 id="courseTitle"></h1>
-      <h5 id="courseContent">
-      </h5>
-      <h6 class="mt-3">
-        <span><i class="fa fa-user m-1"></i> Created by </span>
-        <a href="#" class="text-white font-weight-bold mr-4">Lê Trung Tín</a>
-        <span><i class="fa fa-calendar-check-o mr-1"></i> Last updated 04/2019</span>
-      </h6>
-      <h6 class="mt-3">
-        <span><i class="fa fa-play-circle mr-1"></i> <span id="lectureCount"></span></span>
-        <span class="mx-1"> | </span>
-        <span><i class="fa fa-clock-o mr-1"></i> <span id="hourCount"></span></span>
-        <span class="ml-2">with <b class="mx-1">568,171</b> students enrolled</span>
-      </h6>
-    </div>
-  </div>
-</section>
 
-<section class="course-content">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8">
-        <!-- BEGIN DESC -->
-        <div class="course-desc">
-          <h4 class="course-desc-title">What you'll learn</h4>
-          <div class="row" id="targetList">
-          </div>
-        </div>
-        <!-- END DESC -->
-        <!-- BEGIN LIST -->
-        <div class="course-list">
-          <div class="list-header d-flex align-items-center justify-content-between">
-            <h4 class="font-weight-bold">Course content</h4>
-            <div>
-              <span class="mr-3" id="lectureCount2"></span>
-            </div>
-          </div>
-          <div class="mt-2">
-            <a href="#list-content" class="list-content-first" data-toggle="collapse">
-              <span><i class="fa fa-minus mr-1"></i> Course list</span>
-              <span><span id="timeHour"></span>:<span id="timeMinute"></span>:<span id="timeSecond"></span></span>
-            </a>
-            <ul id="list-content" class="collapse show">
-            </ul>
-          </div>
-        </div>
-        <!-- END LIST -->
-        <!-- BEGIN INFO -->
-        <div class="course-info mt-4">
-          <h4 class="font-weight-bold">Description</h4>
-          <div id="descriptionContent">
-          </div>
-        </div>
-        <!-- END INFO -->
-      </div>
-      <div class="col-md-4">
-        <div class="course-buy">
-          <h2 class="mb-4 font-weight-bold" id="price">
-          </h2>
-          <button class="btn btn-danger w-100" onclick="addCart(this.value)" id="addCartBtn">Add to cart</button>
-          <button class="btn btn-outline-secondary w-100" id="buyOneBtn">Buy now
-          </button>
-          <div class="course-buy-info mt-2">
-            <span>This course includes</span>
-            <small><i class="fa fa-play-circle-o"></i> <span style="display: inline" id="timeHour2"></span> hours
-              on-demand video</small>
-            <small><i class="fa fa-file-o"></i> <span style="display: inline" id="lectureCount3"></span>
-              articles</small>
-            <small><i class="fa fa-code"></i> <span style="display: inline" id="lectureCount4"></span> coding
-              exercises</small>
-            <small><i class="fa fa-empire"></i> Full lifetime access</small>
-            <small><i class="fa fa-tablet"></i> Access on mobile and TV</small>
-            <small><i class="fa fa-recycle"></i> Certificate of Completion</small>
-          </div>
-          <a class="course-buy-share border-top" href="#">
-            <i class="fa fa-share"></i> Share
-          </a>
-        </div>
-      </div>
+<!-- BEGIN COURSE LIST -->
+<section class="popular">
+  <div class="container-fluid">
+<!--    <h3 class="title mt-0">Popular course</h3>-->
+    <div class="row" id="coursesByCategory">
     </div>
   </div>
 </section>
@@ -231,6 +159,10 @@
             <input type="email" class="form-control" id="rgEmail">
           </div>
           <div class="form-group">
+            <label for="rgPhone">Phone</label>
+            <input type="text" class="form-control" id="rgPhone">
+          </div>
+          <div class="form-group">
             <label for="rgPassword">Password</label>
             <input type="password" class="form-control" id="rgPassword">
           </div>
@@ -251,28 +183,6 @@
   </div>
 </div>
 
-<!--VIDEO MODAL-->
-<div class="modal" id="videoModal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content bg-dark">
-
-      <!-- Modal Header -->
-      <div class="modal-header text-light">
-        <h4 class="modal-title" id="videoTitle">Đăng nhập</h4>
-        <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <iframe id="videoFrame" height="450px" width="100%" frameborder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <footer class="py-4 mt-4 text-center border-top" id="page-footer">
 </footer>
 
@@ -281,84 +191,80 @@
 <script src="./lib/jquery/jquery.slim.min.js"></script>
 <script src="./lib/popper.js/popper.min.js"></script>
 <script src="./lib/bootstrap/bootstrap.min.js"></script>
-<script src="./lib/modal-video/js/jquery-modal-video.min.js"></script>
-<!--<script>-->
-<!--	$(".btn-video").modalVideo({channel: 'youtube'});-->
-<!--</script>-->
+<!--  Font Awesome-->
+<!--  <link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css">-->
 <script src="https://kit.fontawesome.com/3a06200ec6.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-<!--use the custom js file-->
 <script src="js/elearning.js"></script>
-<script>
-	let courseId = localStorage.getItem("courseId");
-	let courseBought = null;
 
-	// get user profile
+<script>
+	drawMainMenuItem();
+	let courseBought = null;
+	let categoryTitle = localStorage.getItem("categoryTitle");
+	let categoryId = localStorage.getItem("categoryId");
+	if (!categoryId) {
+		window.location.href = "index.html";
+  }
+  if (categoryTitle) {
+  	setBreadcrumbItem("categoryTitle", categoryTitle);
+  }
+
 	let currentToken = localStorage.getItem("ut");
 	if (currentToken) {
 		getUserProfile(currentToken);
 		getCourseBoughtList(currentToken);
-		showProfileMenu(currentToken, courseId);
+		showProfileMenuWithoutCourseId(currentToken);
 		courseBought = JSON.parse(localStorage.getItem("courseBought"));
 		if (courseBought == null) {
 			window.location.reload();
-    } else {
-			disableAddCartAndBuyButton(courseId);     // if bought, disable buttons
-		}
-
+    }
 	}
 
-	getCourseDetails(courseId);
 
-	// show main menu
-	drawMainMenuItem();
-
-	// global variables
 	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
-	let userProfile = JSON.parse(localStorage.getItem("userProfile"));
-
-
-
-	let courseDetails = JSON.parse(localStorage.getItem("courseDetails"));
-
-
-	// check cart count
 	if (courseInCart == null) {
 		courseInCart = [];
 		disableCartPurchase();
-	} else {
-		showCartList(courseInCart);
+  } else {
+		showCartList(courseInCart)
 	}
 	document.getElementById("cartCount").innerHTML = courseInCart.length;
-
-	// check course id existence when some course is deleted by somehow
-	if (!courseId) {
-		window.location.href = "index.html";
-	}
-
-	document.getElementById("buyOneBtn").addEventListener("click", () => {
-		buyOne(currentToken, courseId);
-		if (currentToken) {
-			disableButton("buyOneBtn");
-			disableButton("addCartBtn");
-    }
-	})
-
 	document.getElementById("purchaseCoursesBtn").addEventListener("click", () => {
+		let courseIdList = JSON.parse(localStorage.getItem("courseInCart"));
 		buyAll(currentToken);
 		if (currentToken) {
-			disableButton("buyOneBtn");
-			disableButton("addCartBtn");
+			courseIdList.forEach(courseId => {
+				disableButtonInList("addCartBtn_" + courseId);
+			})
     }
-	})
+  })
 
+  // show courses by a specific category
+  axios({
+    url: 'http://localhost:8082/api/course/category',
+    method: 'post',
+    data: {
+    	"categoryId": categoryId
+    }
+  }).then(res => {
+  	let courses = res.data;
+  	let htmlCourses = '';
+  	let divCourses = document.getElementById("coursesByCategory");
+  	htmlCourses = htmlCourseList(courses, null, courseBought);
+  	divCourses.innerHTML = htmlCourses;
+  }).catch(err => {
+  	console.log(err);
+  })
+
+	// showSaleOffCourses(courseBought);
+	// showPopularCourses(courseBought);
+	// showPopularCategories(8);
 	showPageFooter();
-
-
+	
+	function setBreadcrumbItem(elementId, title) {
+  document.getElementById(elementId).innerHTML = title;
+	}
 </script>
-
-
 </body>
 
 </html>

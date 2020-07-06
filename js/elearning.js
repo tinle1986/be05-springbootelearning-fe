@@ -16,7 +16,6 @@ function disableAddCartAndBuyButton(id) {
 	let courseList = JSON.parse(localStorage.getItem("courseBought"));
 	let alreadyBought = false;
 	alreadyBought = courseList.includes(courseId);
-
 	if (alreadyBought) {
 		/*document.getElementById("buyOneBtn").setAttribute("disabled", true);
 		document.getElementById("addCartBtn").setAttribute("disabled", true);*/
@@ -137,7 +136,7 @@ function logIn() {
 			document.getElementById("lgPassword").value = "";
 			document.getElementById("lgEmail").value = "";
 			alert("Signed in successfully!");
-			window.location.reload();
+			window.location = window.location;
 		})
 		.catch(err => {
 			console.log(err);
@@ -302,9 +301,9 @@ function courseDetail(id) {
 }
 
 // fetch course details
-function getCourseDetails(token, id) {
+function getCourseDetails(id) {
 	axios({
-		url: `http://localhost:8082/api/course/detail/${id}`,
+		url: 'http://localhost:8082/api/course/detail/' + id,
 		method: 'GET',
 	}).then(res => {
 		localStorage.setItem("courseDetails", JSON.stringify(res.data));
@@ -326,10 +325,10 @@ function getCourseDetails(token, id) {
 		document.getElementById("addCartBtn").setAttribute("value", course.id);
 		document.getElementById("buyOneBtn").setAttribute("value", course.id);
 
-		if (token) {
+		/*if (token) {
 			// getCourseBoughtList(token, course);
 			// disableAddCartAndBuyButton(course);
-		}
+		}*/
 
 		// fetch target list
 		axios({
@@ -507,7 +506,7 @@ function showProfileMenu(token, id) {
 		document.getElementById("rightMenu").classList.add("d-flex", "justify-content-end");
 		document.getElementById("rightMenu").classList.remove("text-right");
 
-		getCourseDetails(token, id)
+		getCourseDetails(id)
 	}
 
 }
@@ -792,7 +791,7 @@ function showPopularCategories(num) {
 		categories.slice(0, num).forEach(item => {
 			htmlPopularCategory += `
         <div class="col-md-3">
-          <a class="category">
+          <a class="category" id="popularCategory_${item.id}" onclick="listCoursesByCategory('${item.id}', '${item.title}')">
             <i class="${item.icon}"></i>
             <span class="text-capitalize">${item.title}</span>
           </a>
@@ -806,6 +805,12 @@ function showPopularCategories(num) {
 	}).catch(err => {
 		console.log(err);
 	})
+}
+
+function listCoursesByCategory(categoryId, categoryTitle) {
+	localStorage.setItem("categoryId", categoryId);
+	localStorage.setItem("categoryTitle", categoryTitle);
+	window.location.href = "category.html";
 }
 
 // make html for course list

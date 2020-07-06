@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Title</title>
+  <title>Homepage</title>
   <!--  Customized CSS-->
   <link rel="stylesheet" href="css/elearning.css">
 
@@ -22,7 +22,7 @@
 <body>
 <header class="border-bottom">
   <nav class="navbar navbar-expand-sm navbar-light bg-light">
-    <a class="navbar-brand" href="#">Elearning</a>
+    <a class="navbar-brand" href="index.html">Elearning</a>
     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
             data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
             aria-label="Toggle navigation"></button>
@@ -324,6 +324,7 @@
 <script src="js/elearning.js"></script>
 
 <script>
+  let courseBought = null;
 	drawMainMenuItem();
 
 	let currentToken = localStorage.getItem("ut");
@@ -331,10 +332,12 @@
 		getUserProfile(currentToken);
 		getCourseBoughtList(currentToken);
 		showProfileMenuWithoutCourseId(currentToken);
-
+		courseBought = JSON.parse(localStorage.getItem("courseBought"));
+    if (courseBought == null) {
+    	window.location.reload();
+    }
 	}
 
-	let courseBought = JSON.parse(localStorage.getItem("courseBought"));
 
 
 	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
@@ -348,12 +351,14 @@
 	document.getElementById("purchaseCoursesBtn").addEventListener("click", () => {
 		let courseIdList = JSON.parse(localStorage.getItem("courseInCart"));
 		buyAll(currentToken);
-		courseIdList.forEach(courseId => {
-			disableButtonInList("addCartBtn_" + courseId);
-    })
+		if (currentToken) {
+			courseIdList.forEach(courseId => {
+				disableButtonInList("addCartBtn_" + courseId);
+			})
+    }
   })
 
-	showSaleOffCourses(courseBought);
+  showSaleOffCourses(courseBought);
 	showPopularCourses(courseBought);
 	showPopularCategories(8);
 	showPageFooter();
