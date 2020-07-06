@@ -43,9 +43,9 @@
           </li>
           <li class="nav-item w-100">
             <form class="input-group nav-search">
-              <input type="text" class="form-control" placeholder="Search courses">
+              <input type="text" class="form-control" placeholder="Search courses" id="searchInput">
               <div class="input-group-append">
-                <button class="btn bg-white text-danger"><i class="fa fa-search"></i></button>
+                <button class="btn bg-white text-danger" id="searchBtn"><i class="fa fa-search"></i></button>
               </div>
             </form>
           </li>
@@ -351,6 +351,13 @@
 			disableButton("buyOneBtn");
 			disableButton("addCartBtn");
     }
+	})
+
+	document.getElementById("searchBtn").addEventListener("click", (event) => {
+		event.preventDefault();
+		let searchString = document.getElementById("searchInput").value;
+		localStorage.setItem("keywordtf", searchString);
+		window.location.href = "search.html";
 	})
 
 	showPageFooter();

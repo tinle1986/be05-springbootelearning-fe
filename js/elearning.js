@@ -471,7 +471,7 @@ function drawMainMenuItem() {
 		let htmlMenu = "";
 
 		categories.forEach(item => {
-			htmlMenu += `<a class="dropdown-item" href="#">
+			htmlMenu += `<a class="dropdown-item" href="#" id="categoryItem_${item.id}" onclick="listCoursesByCategory('${item.id}', '${item.title}')">
                             <i class="${item.icon} mr-1"></i>
                             <span class="text-capitalize">${item.title}</span>
                         </a>`
@@ -1019,5 +1019,55 @@ function showPopularCourses(courseBought) {
 		popularSec1.innerHTML = htmlPopularCourse;
 	}).catch(err => {
 		console.log(err)
+	})
+}
+
+function setBreadcrumbItem(elementId, title) {
+	document.getElementById(elementId).innerHTML = title;
+}
+
+// show courses by a specific category
+function showCoursesByCategory(cateId) {
+	axios({
+		url: 'http://localhost:8082/api/course/category',
+		method: 'post',
+		data: {
+			"categoryId": cateId
+		}
+	}).then(res => {
+		let courses = res.data;
+		let htmlCourses = '';
+		let divCourses = document.getElementById("coursesByCategory");
+		htmlCourses = htmlCourseList(courses, null, courseBought);
+		divCourses.innerHTML = htmlCourses;
+	}).catch(err => {
+		console.log(err);
+	})
+}
+
+// show courses by a specific category
+function showSearchResult(searchText) {
+	axios({
+		url: 'http://localhost:8082/api/course/find',
+		method: 'post',
+		data: {
+			"titleString": searchText
+		}
+	}).then(res => {
+		let courses = res.data;
+		let htmlCourses = '';
+		let divCourses = document.getElementById("searchResult");
+
+		if (courses.length <= 0) {
+			htmlCourses = `
+				<h2 class="text-danger m-auto">No Courses Found</h2>
+			`
+		} else {
+			htmlCourses = htmlCourseList(courses, null, courseBought);
+		}
+		divCourses.innerHTML = htmlCourses;
+
+	}).catch(err => {
+		console.log(err);
 	})
 }

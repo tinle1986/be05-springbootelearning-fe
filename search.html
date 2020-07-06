@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Category</title>
+  <title>Search Result</title>
   <!--  Customized CSS-->
   <link rel="stylesheet" href="css/elearning.css">
 
@@ -85,18 +85,21 @@
 <nav aria-label="breadcrumb">
   <div class="container-fluid">
     <ol class="breadcrumb bg-white mb-0 py-2">
-      <li class="breadcrumb-item"><a href="#"><i class="fa fa-home mr-1"></i> <span id="categoryTitle"
-                                                                                    class="text-capitalize"></span></a>
+      <li class="breadcrumb-item"><a href="#"><i class="fa fa-home mr-1"></i> <span class="text-capitalize">Search</span></a>
       </li>
     </ol>
   </div>
 </nav>
 
+<section>
+  <h2 class="ml-3 mb-5 text-dark font-weight-bold" id="searchDescription"></h2>
+</section>
+
 <!-- BEGIN COURSE LIST -->
 <section class="popular">
   <div class="container-fluid">
 <!--    <h3 class="title mt-0">Popular course</h3>-->
-    <div class="row" id="coursesByCategory">
+    <div class="row" id="searchResult">
     </div>
   </div>
 </section>
@@ -200,13 +203,14 @@
 <script>
 	drawMainMenuItem();
 	let courseBought = null;
-	let categoryTitle = localStorage.getItem("categoryTitle");
-	let categoryId = localStorage.getItem("categoryId");
-	if (!categoryId) {
-		window.location.href = "index.html";
-  }
-  if (categoryTitle) {
-  	setBreadcrumbItem("categoryTitle", categoryTitle);
+	let searchString = localStorage.getItem("keywordtf");
+
+	if (searchString) {
+		document.getElementById("searchDescription").innerHTML = "Results for searching " + "'" + searchString + "'"
+		showSearchResult(searchString);
+  } else {
+		document.getElementById("searchDescription").innerHTML = "Results for searching " + "'" + "'"
+		showSearchResult("");
   }
 
 	let currentToken = localStorage.getItem("ut");
@@ -229,7 +233,6 @@
 		showCartList(courseInCart)
 	}
 	document.getElementById("cartCount").innerHTML = courseInCart.length;
-
 	document.getElementById("purchaseCoursesBtn").addEventListener("click", () => {
 		let courseIdList = JSON.parse(localStorage.getItem("courseInCart"));
 		buyAll(currentToken);
@@ -240,18 +243,15 @@
     }
   })
 
-	document.getElementById("searchBtn").addEventListener("click", (event) => {
-		event.preventDefault();
-		let searchString = document.getElementById("searchInput").value;
-		localStorage.setItem("keywordtf", searchString);
-		window.location.href = "search.html";
-	})
-
-  showCoursesByCategory(categoryId);
+  // click button search
+  document.getElementById("searchBtn").addEventListener("click", (event) => {
+  	event.preventDefault();
+  	let searchText = document.getElementById("searchInput").value;
+  	document.getElementById("searchDescription").innerHTML = "Results for searching " + "'" + searchText + "'"
+  	showSearchResult(searchText);
+  })
 
 	showPageFooter();
-	
-
 </script>
 </body>
 

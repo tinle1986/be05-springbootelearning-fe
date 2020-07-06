@@ -41,9 +41,9 @@
           </li>
           <li class="nav-item w-100">
             <form class="input-group nav-search">
-              <input type="text" class="form-control" placeholder="Search courses">
+              <input type="text" class="form-control" placeholder="Search courses" id="searchInput">
               <div class="input-group-append">
-                <button class="btn bg-white text-danger"><i class="fa fa-search"></i></button>
+                <button class="btn bg-white text-danger" id="searchBtn"><i class="fa fa-search"></i></button>
               </div>
             </form>
           </li>
@@ -338,8 +338,6 @@
     }
 	}
 
-
-
 	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
 	if (courseInCart == null) {
 		courseInCart = [];
@@ -348,6 +346,7 @@
 		showCartList(courseInCart)
 	}
 	document.getElementById("cartCount").innerHTML = courseInCart.length;
+
 	document.getElementById("purchaseCoursesBtn").addEventListener("click", () => {
 		let courseIdList = JSON.parse(localStorage.getItem("courseInCart"));
 		buyAll(currentToken);
@@ -356,6 +355,13 @@
 				disableButtonInList("addCartBtn_" + courseId);
 			})
     }
+  })
+
+  document.getElementById("searchBtn").addEventListener("click", (event) => {
+  	event.preventDefault();
+  	let searchString = document.getElementById("searchInput").value;
+  	localStorage.setItem("keywordtf", searchString);
+  	window.location.href = "search.html";
   })
 
   showSaleOffCourses(courseBought);
