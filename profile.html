@@ -3,6 +3,9 @@
 
 <head>
   <title>My Profile</title>
+  <!--  Customized CSS-->
+  <link rel="stylesheet" href="css/elearning.css">
+
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,7 +51,22 @@
         </ul>
       </div>
       <div class="col-md-1 nav-cart">
-        <i class="fa fa-shopping-basket"></i>
+        <div class="dropdown">
+          <div class="dropdown-toggle font-weight-bold text-dark btn notification" data-toggle="dropdown">
+            <i class="fa fa-shopping-basket"></i>
+            <span class="badge" id="cartCount">0</span>
+          </div>
+          <div class="dropdown-menu">
+            <div id="selectedCourses">
+              <ol id="selectedCoursesSub">
+              </ol>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a id="purchaseCoursesBtn" class="dropdown-item" href="#">Purchase Courses</a>
+            <div class="dropdown-divider"></div>
+            <a id="clearCoursesBtn" class="dropdown-item" href="#" onclick="clearCart()">Clear Courses</a>
+          </div>
+        </div>
       </div>
       <div class="col-md-5 d-flex justify-content-end">
         <div class="dropdown">
@@ -229,6 +247,19 @@
 		localStorage.clear();
 		window.location.href = "index.html";
 	}
+
+	// check cart
+	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
+	if (courseInCart == null) {
+		courseInCart = [];
+		disableCartPurchase();
+  } else {
+		showCartList(courseInCart);
+  }
+	document.getElementById("cartCount").innerHTML = courseInCart.length;
+	document.getElementById("purchaseCoursesBtn").addEventListener("click", () => {
+		buyAll(currentToken);
+  })
 
 	let userProfile = JSON.parse(localStorage.getItem("userProfile"));
 

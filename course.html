@@ -3,6 +3,9 @@
 
 <head>
   <title>My Courses</title>
+  <!--  Customized CSS-->
+  <link rel="stylesheet" href="css/elearning.css">
+
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,7 +49,22 @@
         </ul>
       </div>
       <div class="col-md-1 nav-cart">
-        <i class="fa fa-shopping-basket"></i>
+        <div class="dropdown">
+          <div class="dropdown-toggle font-weight-bold text-dark btn notification" data-toggle="dropdown">
+            <i class="fa fa-shopping-basket"></i>
+            <span class="badge" id="cartCount">0</span>
+          </div>
+          <div class="dropdown-menu">
+            <div id="selectedCourses">
+              <ol id="selectedCoursesSub">
+              </ol>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a id="purchaseCoursesBtn" class="dropdown-item" href="#">Purchase Courses</a>
+            <div class="dropdown-divider"></div>
+            <a id="clearCoursesBtn" class="dropdown-item" href="#" onclick="clearCart()">Clear Courses</a>
+          </div>
+        </div>
       </div>
       <div class="col-md-5 d-flex justify-content-end">
         <div class="dropdown">
@@ -116,9 +134,23 @@
 		window.location.href = "index.html"
 	}
 
-  let userProfile = JSON.parse(localStorage.getItem("userProfile"));
-  showProfileInfo(userProfile)
-  showPageFooter();
+	// check cart
+	let courseInCart = JSON.parse(localStorage.getItem("courseInCart"));
+	if (courseInCart == null) {
+		courseInCart = [];
+		disableCartPurchase();
+	} else {
+		showCartList(courseInCart);
+	}
+	document.getElementById("cartCount").innerHTML = courseInCart.length;
+	document.getElementById("purchaseCoursesBtn").addEventListener("click", () => {
+		buyAll(currentToken);
+		showMyCourses(currentToken);
+	})
+
+	let userProfile = JSON.parse(localStorage.getItem("userProfile"));
+	showProfileInfo(userProfile)
+	showPageFooter();
 
 	document.getElementById("searchBtn").addEventListener("click", (event) => {
 		event.preventDefault();
@@ -126,7 +158,6 @@
 		localStorage.setItem("keywordtf", searchString);
 		window.location.href = "search.html";
 	})
-
 
 
 </script>
